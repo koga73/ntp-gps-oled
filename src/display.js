@@ -58,6 +58,8 @@ class Display {
 	}
 
 	update({lat = 0, lon = 0, alt = 0, speed = 0, status = 0, time = 0, sats = 0, quality = 0, pps = 0}) {
+		const {oled} = this;
+
 		const lines = [
 			`Sats: ${sats}`,
 			`Lat: ${lat.toFixed(Display.DECIMAL_PRECISION)}, Lon: ${lon.toFixed(Display.DECIMAL_PRECISION)}`,
