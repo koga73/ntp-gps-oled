@@ -46,7 +46,7 @@ class Display {
 			if (turnOff) {
 				oled.turnOffDisplay();
 			}
-			oled = null;
+			this.oled = null;
 		}
 	}
 
