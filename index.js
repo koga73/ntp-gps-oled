@@ -2,7 +2,7 @@ const Gpsd = require("./src/gpsd.js");
 const Display = require("./src/display.js");
 
 // Update at least every interval
-const UPDATE_INTERVAL = 60000;
+const UPDATE_INTERVAL = 1000;
 const TRY_MIN_INTERVAL = 1000;
 
 let needsUpdate = true;
