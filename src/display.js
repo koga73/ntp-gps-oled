@@ -34,18 +34,19 @@ class Display {
 		this.update = this.update.bind(this);
 
 		const oled = new Oled(board, five, this.oled_options);
-		oled.clearDisplay();
+		oled.turnOnDisplay();
+		oled.clearDisplay(false);
 		oled.update();
 		this.oled = oled;
 	}
 
-	destroy(clearDisplay = true) {
-		if (this.oled) {
-			if (clearDisplay) {
-				this.oled.clearDisplay();
-				this.oled.update();
+	destroy(turnOff = true) {
+		const {oled} = this;
+		if (oled) {
+			if (turnOff) {
+				oled.turnOffDisplay();
 			}
-			this.oled = null;
+			oled = null;
 		}
 	}
 
@@ -73,7 +74,7 @@ class Display {
 
 		const lines = [`${satsStr}${satsPpsSpace}${ppsStr}`, `${monthStr}-${dayStr}-${yearStr} ${hoursStr}:${minutesStr}:${secondsStr}`, ip ? ip : "IP: N/A"];
 
-		oled.clearDisplay();
+		oled.clearDisplay(false);
 		for (let i = 0; i < lines.length; i++) {
 			const line = lines[i];
 			const y = i * (Display.FONT_HEIGHT + Display.FONT_LEADING);
