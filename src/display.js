@@ -11,7 +11,7 @@ const DEFAULT_OLED_OPTIONS = {
 };
 
 class Display {
-	static DECIMAL_PRECISION = 7; // Number of decimal places
+	static DECIMAL_PRECISION = 3; // Number of decimal places
 
 	static FONT_WIDTH = 5; // Height of the font in pixels
 	static FONT_HEIGHT = 7; // Height of the font in pixels

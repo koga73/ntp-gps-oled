@@ -11,9 +11,9 @@ class IP {
 		if (IP.cache && !force) {
 			return Promise.resolve(IP.cache);
 		}
-		return dnsLookup(os.hostname(), {family: 4}).then((addr) => {
-			IP.cache = addr;
-			return addr;
+		return dnsLookup(os.hostname(), {family: 4}).then(({address}) => {
+			IP.cache = address;
+			return address;
 		});
 	}
 }
