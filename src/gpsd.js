@@ -204,3 +204,4 @@ class Gpsd extends EventTarget {
 		this.dispatchEvent(new CustomEvent(Gpsd.EVENT.PPS, {detail: data}));
 	}
 }
+module.exports = Gpsd;

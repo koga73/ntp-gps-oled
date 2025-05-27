@@ -73,3 +73,4 @@ class Display {
 		oled.update();
 	}
 }
+module.exports = Display;
