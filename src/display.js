@@ -11,11 +11,11 @@ const DEFAULT_OLED_OPTIONS = {
 };
 
 class Display {
-	static DECIMAL_PRECISION = 8; // Number of decimal places
+	static DECIMAL_PRECISION = 7; // Number of decimal places
 
 	static FONT_WIDTH = 5; // Height of the font in pixels
 	static FONT_HEIGHT = 7; // Height of the font in pixels
-	static FONT_PADDING = 3; // Padding between lines in pixels
+	static FONT_PADDING = 1; // Padding between lines in pixels
 
 	debug = false;
 	board = null;
@@ -66,25 +66,26 @@ class Display {
 
 		const satsStr = `SATS: ${sats}`;
 		const ppsStr = `PPS: ${pps ? "YES" : "NO"}`;
-		const satsPpsSpace = " ".repeat(this.oled_options.width - (satsStr.length + ppsStr.length) * (Display.FONT_WIDTH + 1) - 2);
+		const satsPpsSpace = " ".repeat(Math.floor(this.oled_options.width / (Display.FONT_WIDTH + 1)) - (satsStr.length + ppsStr.length));
+		const line1 = `${satsStr}${satsPpsSpace}${ppsStr}`;
+
+		const hasNegative = lat < 0 || lon < 0;
+		const line2 = `LAT: ${hasNegative && lat >= 0 ? " " : ""}${lat.toFixed(Display.DECIMAL_PRECISION)}`;
+		const line3 = `LON: ${hasNegative && lon >= 0 ? " " : ""}${lon.toFixed(Display.DECIMAL_PRECISION)}`;
 
 		const now = new Date();
 		const hoursStr = now.getHours().toString().padStart(2, "0");
 		const minutesStr = now.getMinutes().toString().padStart(2, "0");
 		const secondsStr = now.getSeconds().toString().padStart(2, "0");
+		const line4 = `TIME: ${hoursStr}:${minutesStr}:${secondsStr}`;
 
-		const lines = [
-			`${satsStr}${satsPpsSpace}${ppsStr}`,
-			`LAT: ${lat.toFixed(Display.DECIMAL_PRECISION)}`,
-			`LON: ${lon.toFixed(Display.DECIMAL_PRECISION)}`,
-			`TIME: ${hoursStr}:${minutesStr}:${secondsStr}`
-		];
+		const lines = [line1, line2, line3, line4];
 
 		oled.clearDisplay();
 		for (let i = 0; i < lines.length; i++) {
 			const line = lines[i];
 			const y = i * (Display.FONT_HEIGHT + Display.FONT_PADDING);
-			oled.setCursor(1, y);
+			oled.setCursor(0, y);
 			oled.writeString(font, 1, line, 1, false, 1, false);
 		}
 		oled.update();
