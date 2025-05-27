@@ -65,11 +65,11 @@ class Gpsd extends EventTarget {
 			parse,
 			...options
 		});
-		client.on("connected", handler_connected);
-		client.on("error", handler_error);
-		client.on("TPV", handler_tpv);
-		client.on("SKY", handler_sky);
-		client.on("PPS", handler_pps);
+		client.on("connected", this.handler_connected);
+		client.on("error", this.handler_error);
+		client.on("TPV", this.handler_tpv);
+		client.on("SKY", this.handler_sky);
+		client.on("PPS", this.handler_pps);
 		client.connect();
 
 		this.client = client;
