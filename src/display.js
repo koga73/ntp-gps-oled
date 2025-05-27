@@ -14,7 +14,7 @@ class Display {
 
 	static FONT_WIDTH = 5; // Height of the font in pixels
 	static FONT_HEIGHT = 7; // Height of the font in pixels
-	static FONT_LEADING = 3; // Padding between lines in pixels
+	static FONT_LEADING = 4; // Padding between lines in pixels
 
 	debug = false;
 	oled = null;
