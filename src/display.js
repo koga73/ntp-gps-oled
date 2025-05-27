@@ -12,7 +12,7 @@ const DEFAULT_OLED_OPTIONS = {
 
 class Display {
 	static DECIMAL_PRECISION = 6; // Number of decimal places
-	static FONT_HEIGHT = 7; // Height of the font in pixels
+	static FONT_HEIGHT = 8; // Height of the font in pixels
 
 	debug = false;
 	board = null;
@@ -60,11 +60,15 @@ class Display {
 	update({lat = 0, lon = 0, alt = 0, speed = 0, status = 0, time = 0, sats = 0, quality = 0, pps = 0}) {
 		const {oled} = this;
 
+		const now = new Date();
+		const hoursStr = now.getHours().toString().padStart(2, "0");
+		const minutesStr = now.getMinutes().toString().padStart(2, "0");
+
 		const lines = [
-			`Sats: ${sats}`,
-			`Lat: ${lat.toFixed(Display.DECIMAL_PRECISION)}, Lon: ${lon.toFixed(Display.DECIMAL_PRECISION)}`,
-			`Time: ${new Date().toLocaleTimeString()}`,
-			`PPS: ${pps ? "Yes" : "No"}`
+			`SATS: ${sats} PPS: ${pps ? "Yes" : "No"}`,
+			`LAT: ${lat.toFixed(Display.DECIMAL_PRECISION)}`,
+			`LON: ${lon.toFixed(Display.DECIMAL_PRECISION)}`,
+			`TIME: ${hoursStr}:${minutesStr}`
 		];
 
 		oled.clearDisplay();
