@@ -61,7 +61,7 @@ class Display {
 		const lines = [
 			`Sats: ${sats}`,
 			`Lat: ${lat.toFixed(Display.DECIMAL_PRECISION)}, Lon: ${lon.toFixed(Display.DECIMAL_PRECISION)}`,
-			`Time: ${Date.Now().toLocaleTimeString()}`,
+			`Time: ${new Date().toLocaleTimeString()}`,
 			`PPS: ${pps ? "Yes" : "No"}`
 		];
 
