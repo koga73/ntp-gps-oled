@@ -48,7 +48,7 @@ class Gpsd extends EventTarget {
 		pps: 0
 	};
 
-	constructor({debug = false, port = 2947, hostname = "localhost", parse = true, ...options} = {}) {
+	constructor({debug = true, port = 2947, hostname = "localhost", parse = true, ...options} = {}) {
 		super();
 
 		this.debug = debug;
@@ -187,7 +187,7 @@ class Gpsd extends EventTarget {
 		if (this.debug) {
 			console.log("PPS:", data);
 		}
-		const {real_sec: pps} = data;
+		const {realSec: pps} = data;
 
 		let didUpdate = false;
 		const oldData = this.data;
