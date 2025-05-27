@@ -8,18 +8,37 @@ const TRY_MIN_INTERVAL = 1000;
 
 let needsUpdate = true;
 let lastUpdate = 0;
+let interval = 0;
 
 const display = new Display();
 const gpsd = new Gpsd();
 
 (function main() {
+	// Exit gracefully on Ctrl+C
+	process.stdin.resume();
+	process.on("SIGINT", destroy);
+
 	gpsd.addEventListener(Gpsd.EVENT.UPDATE, handler_gps_update);
 
-	setInterval(() => {
+	interval = setInterval(() => {
 		needsUpdate = true;
 		tryUpdate();
 	}, UPDATE_INTERVAL);
 })();
+
+function destroy() {
+	clearInterval(interval);
+	interval = 0;
+
+	gpsd.removeEventListener(Gpsd.EVENT.UPDATE, handler_gps_update);
+	gpsd.destroy();
+	gpsd = null;
+
+	display.destroy();
+	display = null;
+
+	process.exit();
+}
 
 function handler_gps_update(evt) {
 	needsUpdate = true;

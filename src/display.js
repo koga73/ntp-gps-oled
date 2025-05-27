@@ -41,8 +41,12 @@ class Display {
 		this.board = board;
 	}
 
-	destroy() {
+	destroy(clearDisplay = true) {
 		if (this.oled) {
+			if (clearDisplay) {
+				this.oled.clearDisplay();
+				this.oled.update();
+			}
 			this.oled = null;
 		}
 		if (this.board) {
@@ -76,10 +80,10 @@ class Display {
 		*/
 
 		const now = new Date();
-		const monthStr = (now.getMonth() + 1).toString();
+		const monthStr = (now.getMonth() + 1).toString().padStart(2, "0");
 		const dayStr = now.getDate().toString().padStart(2, "0");
 		const yearStr = now.getFullYear().toString().slice(-2); // Last two digits of the year
-		const hoursStr = now.getHours();
+		const hoursStr = now.getHours().toString().padStart(2, "0");
 		const minutesStr = now.getMinutes().toString().padStart(2, "0");
 		const secondsStr = now.getSeconds().toString().padStart(2, "0");
 
