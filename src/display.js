@@ -51,7 +51,7 @@ class Display {
 		if (this.debug) {
 			console.log("Board is ready");
 		}
-		const oled = new Oled(board, five, this.oled_options);
+		const oled = new Oled(this.board, five, this.oled_options);
 		oled.clearDisplay();
 		oled.update();
 		this.oled = oled;
