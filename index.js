@@ -35,9 +35,10 @@ function tryUpdate() {
 	}
 	update();
 }
-function update() {
+async function update() {
 	needsUpdate = false;
 	lastUpdate = Date.now();
 
-	display.update({...gpsd.data, ip: IP.get()});
+	const ip = await IP.get();
+	display.update({...gpsd.data, ip});
 }

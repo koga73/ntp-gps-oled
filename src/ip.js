@@ -8,11 +8,11 @@ class IP {
 	static cache = null;
 
 	static get(force = false) {
-		if (cache && !force) {
+		if (IP.cache && !force) {
 			return Promise.resolve(cache);
 		}
 		return dnsLookup(os.hostname(), {family: 4}).then((addr) => {
-			cache = addr;
+			IP.cache = addr;
 			return addr;
 		});
 	}
