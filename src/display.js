@@ -15,7 +15,7 @@ class Display {
 
 	static FONT_WIDTH = 5; // Height of the font in pixels
 	static FONT_HEIGHT = 7; // Height of the font in pixels
-	static FONT_PADDING = 2; // Padding between lines in pixels
+	static FONT_LEADING = 1; // Padding between lines in pixels
 
 	debug = false;
 	board = null;
@@ -61,7 +61,7 @@ class Display {
 		this.oled = oled;
 	}
 
-	update({lat = 0, lon = 0, alt = 0, speed = 0, status = 0, time = 0, sats = 0, quality = 0, pps = 0}) {
+	update({lat = 0, lon = 0, alt = 0, speed = 0, status = 0, time = 0, sats = 0, quality = 0, pps = 0, ip = null}) {
 		const {oled} = this;
 
 		const satsStr = `SATS: ${sats}`;
@@ -69,22 +69,27 @@ class Display {
 		const satsPpsSpace = " ".repeat(Math.floor(this.oled_options.width / (Display.FONT_WIDTH + 2)) - (satsStr.length + ppsStr.length));
 		const line1 = `${satsStr}${satsPpsSpace}${ppsStr}`;
 
+		/*
 		const hasNegative = lat < 0 || lon < 0;
-		const line2 = `LAT: ${hasNegative && lat >= 0 ? "  " : ""}${lat.toFixed(Display.DECIMAL_PRECISION)}`;
-		const line3 = `LON: ${hasNegative && lon >= 0 ? "  " : ""}${lon.toFixed(Display.DECIMAL_PRECISION)}`;
+		const line2 = `LAT: ${hasNegative && lat >= 0 ? "" : ""}${lat.toFixed(Display.DECIMAL_PRECISION)}`;
+		const line3 = `LON: ${hasNegative && lon >= 0 ? "" : ""}${lon.toFixed(Display.DECIMAL_PRECISION)}`;
+		*/
 
 		const now = new Date();
 		const hoursStr = now.getHours().toString().padStart(2, "0");
 		const minutesStr = now.getMinutes().toString().padStart(2, "0");
 		const secondsStr = now.getSeconds().toString().padStart(2, "0");
-		const line4 = `TIME: ${hoursStr}:${minutesStr}:${secondsStr}`;
+		const line2 = `TIME: ${hoursStr}:${minutesStr}:${secondsStr}`;
+
+		const line3 = `${lat.toFixed(Display.DECIMAL_PRECISION)} ${lon.toFixed(Display.DECIMAL_PRECISION)}`;
+		const line4 = `IP: ${ip ? ip : "N/A"}`;
 
 		const lines = [line1, line2, line3, line4];
 
 		oled.clearDisplay();
 		for (let i = 0; i < lines.length; i++) {
 			const line = lines[i];
-			const y = i * (Display.FONT_HEIGHT + Display.FONT_PADDING);
+			const y = i * (Display.FONT_HEIGHT + Display.FONT_LEADING);
 			oled.setCursor(0, y);
 			oled.writeString(font, 1, line, 1, false, 0, false);
 		}

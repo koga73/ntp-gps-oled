@@ -1,5 +1,6 @@
 const Gpsd = require("./src/gpsd.js");
 const Display = require("./src/display.js");
+const IP = require("./src/ip.js");
 
 // Update at least every interval
 const UPDATE_INTERVAL = 1000;
@@ -38,5 +39,5 @@ function update() {
 	needsUpdate = false;
 	lastUpdate = Date.now();
 
-	display.update(gpsd.data);
+	display.update({...gpsd.data, ip: IP.get()});
 }
