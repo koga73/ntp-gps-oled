@@ -65,7 +65,7 @@ class Display {
 
 		const satsStr = `SATS: ${sats}`;
 		const ppsStr = `PPS: ${pps ? "YES" : "NO"}`;
-		const satsPpsSpace = " ".repeat(this.oled_options.width - (satsStr.length + ppsStr.length) * (FONT_WIDTH + 1) - 2);
+		const satsPpsSpace = " ".repeat(this.oled_options.width - (satsStr.length + ppsStr.length) * (Display.FONT_WIDTH + 1) - 2);
 
 		const now = new Date();
 		const hoursStr = now.getHours().toString().padStart(2, "0");
