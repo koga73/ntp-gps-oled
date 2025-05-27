@@ -1,51 +1,42 @@
-const five = require('johnny-five');
-const Raspi = require("raspi-io").RaspiIO;
-const Oled = require('oled-js');
-const font = require('oled-font-5x7');
+const Gpsd = require("./src/gpsd.js");
+const Display = require("./src/display.js");
 
-//GPS
-/*
-const Gpsd = require('node-gpsd-client')
-const client = new Gpsd({
-  port: 2947,              // default
-  hostname: 'localhost',   // default
-  parse: true
-})
-client.on('connected', () => {
-  console.log('Gpsd connected')
-  client.watch({
-    //class: 'WATCH',
-    json: true,
-    //scaled: true
-  })
-})
-client.on('error', err => {
-  console.log(`Gpsd error: ${err.message}`)
-})
-//SKY, TPV
-//https://gpsd.gitlab.io/gpsd/gpsd_json.html
-client.on('PPS', data => {
-  console.log(data)
-})
-client.connect();
-*/
+// Update at least every interval
+const UPDATE_INTERVAL = 60000;
+const TRY_MIN_INTERVAL = 1000;
 
-//OLED
-const board = new five.Board({
-  io: new Raspi()
-});
-board.on('ready', () => {
-  console.log('Ready');
+let needsUpdate = true;
+let lastUpdate = 0;
 
-  const opts = {
-    width: 128,
-    height: 32,
-    address: 0x3C
-  };
+const display = new Display();
+const gpsd = new Gpsd();
 
-  const oled = new Oled(board, five, opts);
-  oled.clearDisplay();
-  oled.setCursor(1, 1);
-  oled.writeString(font, 1, "Hello World", 1, false, 1);
-  oled.update();
-});
+(function main() {
+	gpsd.addEventListener(GPSD.EVENT.UPDATE, handler_gps_update);
+
+	setInterval(() => {
+		needsUpdate = true;
+		tryUpdate();
+	}, UPDATE_INTERVAL);
+})();
+
+function handler_gps_update(evt) {
+	needsUpdate = true;
+	tryUpdate();
+}
+
+function tryUpdate() {
+	if (!needsUpdate) {
+		return;
+	}
+	if (Date.now() - lastUpdate < TRY_MIN_INTERVAL) {
+		return;
+	}
+	update();
+}
+function update() {
+	needsUpdate = false;
+	lastUpdate = Date.now();
+
+	display.update(gpsd.data);
+}

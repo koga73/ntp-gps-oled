@@ -1,24 +1,24 @@
 {
-  "name": "ntp-oled",
-  "version": "1.0.0",
-  "description": "Show NTP and GPS status on an OLED",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "ntp",
-    "gps",
-    "oled",
-    "status"
-  ],
-  "author": "AJ Savino",
-  "license": "MIT",
-  "dependencies": {
-    "johnny-five": "^2.1.0",
-    "node-gpsd-client": "^1.4.1",
-    "oled-font-5x7": "^1.0.3",
-    "oled-js": "^5.1.2",
-    "raspi-io": "^11.0.0"
-  }
+	"name": "ntp-oled",
+	"version": "1.0.0",
+	"description": "Show NTP and GPS status on an OLED",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"ntp",
+		"gps",
+		"oled",
+		"status"
+	],
+	"author": "AJ Savino",
+	"license": "MIT",
+	"dependencies": {
+		"johnny-five": "^2.1.0",
+		"node-gpsd-client": "^1.4.1",
+		"oled-font-5x7": "^1.0.3",
+		"oled-js": "^5.1.2",
+		"raspi-io": "^11.0.0"
+	}
 }
