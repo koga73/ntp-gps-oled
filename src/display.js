@@ -30,6 +30,7 @@ class Display {
 			...options
 		};
 
+		this.destroy = this.destroy.bind(this);
 		this.update = this.update.bind(this);
 
 		const oled = new Oled(board, five, this.oled_options);

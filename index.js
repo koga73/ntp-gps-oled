@@ -1,4 +1,4 @@
-const five = require("johnny-five");
+const {Board} = require("johnny-five");
 const Raspi = require("raspi-io").RaspiIO;
 
 const Gpsd = require("./src/gpsd.js");
@@ -18,7 +18,7 @@ let lastUpdate = 0;
 let interval = 0;
 
 (function main() {
-	board = new five.Board({
+	board = new Board({
 		io: new Raspi()
 	});
 	board.on("ready", handler_board_ready);
@@ -26,6 +26,7 @@ let interval = 0;
 
 function destroy() {
 	board.off("exit", destroy);
+	board = null;
 
 	clearInterval(interval);
 	interval = 0;
