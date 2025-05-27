@@ -15,7 +15,7 @@ class Display {
 
 	static FONT_WIDTH = 5; // Height of the font in pixels
 	static FONT_HEIGHT = 7; // Height of the font in pixels
-	static FONT_PADDING = 1; // Padding between lines in pixels
+	static FONT_PADDING = 2; // Padding between lines in pixels
 
 	debug = false;
 	board = null;
@@ -66,12 +66,12 @@ class Display {
 
 		const satsStr = `SATS: ${sats}`;
 		const ppsStr = `PPS: ${pps ? "YES" : "NO"}`;
-		const satsPpsSpace = " ".repeat(Math.floor(this.oled_options.width / (Display.FONT_WIDTH + 1)) - (satsStr.length + ppsStr.length));
+		const satsPpsSpace = " ".repeat(Math.floor(this.oled_options.width / (Display.FONT_WIDTH + 2)) - (satsStr.length + ppsStr.length));
 		const line1 = `${satsStr}${satsPpsSpace}${ppsStr}`;
 
 		const hasNegative = lat < 0 || lon < 0;
-		const line2 = `LAT: ${hasNegative && lat >= 0 ? " " : ""}${lat.toFixed(Display.DECIMAL_PRECISION)}`;
-		const line3 = `LON: ${hasNegative && lon >= 0 ? " " : ""}${lon.toFixed(Display.DECIMAL_PRECISION)}`;
+		const line2 = `LAT: ${hasNegative && lat >= 0 ? "  " : ""}${lat.toFixed(Display.DECIMAL_PRECISION)}`;
+		const line3 = `LON: ${hasNegative && lon >= 0 ? "  " : ""}${lon.toFixed(Display.DECIMAL_PRECISION)}`;
 
 		const now = new Date();
 		const hoursStr = now.getHours().toString().padStart(2, "0");
@@ -86,7 +86,7 @@ class Display {
 			const line = lines[i];
 			const y = i * (Display.FONT_HEIGHT + Display.FONT_PADDING);
 			oled.setCursor(0, y);
-			oled.writeString(font, 1, line, 1, false, 1, false);
+			oled.writeString(font, 1, line, 1, false, 0, false);
 		}
 		oled.update();
 	}

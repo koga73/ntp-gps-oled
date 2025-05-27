@@ -48,7 +48,7 @@ class Gpsd extends EventTarget {
 		pps: 0
 	};
 
-	constructor({debug = true, port = 2947, hostname = "localhost", parse = true, ...options} = {}) {
+	constructor({debug = false, port = 2947, hostname = "localhost", parse = true, ...options} = {}) {
 		super();
 
 		this.debug = debug;
@@ -184,8 +184,8 @@ class Gpsd extends EventTarget {
 	// pulse per second signal
 	// https://Gpsd.gitlab.io/gpsd/gpsd_json.html#_pps
 	handler_pps(data) {
+		console.log("PPS:", data);
 		if (this.debug) {
-			console.log("PPS:", data);
 		}
 		const {realSec: pps} = data;
 
