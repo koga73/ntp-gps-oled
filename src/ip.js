@@ -9,7 +9,7 @@ class IP {
 
 	static get(force = false) {
 		if (IP.cache && !force) {
-			return Promise.resolve(cache);
+			return Promise.resolve(IP.cache);
 		}
 		return dnsLookup(os.hostname(), {family: 4}).then((addr) => {
 			IP.cache = addr;
