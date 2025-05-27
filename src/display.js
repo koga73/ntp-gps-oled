@@ -1,6 +1,5 @@
 // https://github.com/noopkat/oled-js/
 const five = require("johnny-five");
-const Raspi = require("raspi-io").RaspiIO;
 const Oled = require("oled-js");
 const font = require("oled-font-5x7");
 
@@ -18,11 +17,11 @@ class Display {
 	static FONT_LEADING = 3; // Padding between lines in pixels
 
 	debug = false;
-	board = null;
 	oled = null;
 	oled_options = {...DEFAULT_OLED_OPTIONS};
 
-	constructor({debug = false, width = DEFAULT_OLED_OPTIONS.width, height = DEFAULT_OLED_OPTIONS.height, address = DEFAULT_OLED_OPTIONS.address, ...options} = {}) {
+	constructor(board, {debug = false, width = DEFAULT_OLED_OPTIONS.width, height = DEFAULT_OLED_OPTIONS.height, address = DEFAULT_OLED_OPTIONS.address, ...options} = {}) {
+		this.board = board;
 		this.debug = debug;
 		this.oled_options = {
 			width,
@@ -31,14 +30,12 @@ class Display {
 			...options
 		};
 
-		this.handler_board_ready = this.handler_board_ready.bind(this);
 		this.update = this.update.bind(this);
 
-		const board = new five.Board({
-			io: new Raspi()
-		});
-		board.on("ready", this.handler_board_ready);
-		this.board = board;
+		const oled = new Oled(board, five, this.oled_options);
+		oled.clearDisplay();
+		oled.update();
+		this.oled = oled;
 	}
 
 	destroy(clearDisplay = true) {
@@ -49,20 +46,6 @@ class Display {
 			}
 			this.oled = null;
 		}
-		if (this.board) {
-			board.off("ready", this.handler_board_ready);
-			this.board = null;
-		}
-	}
-
-	handler_board_ready() {
-		if (this.debug) {
-			console.log("Board is ready");
-		}
-		const oled = new Oled(this.board, five, this.oled_options);
-		oled.clearDisplay();
-		oled.update();
-		this.oled = oled;
 	}
 
 	update({lat = 0, lon = 0, alt = 0, speed = 0, status = 0, time = 0, sats = 0, quality = 0, pps = 0, ip = null}) {

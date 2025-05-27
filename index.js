@@ -1,3 +1,6 @@
+const five = require("johnny-five");
+const Raspi = require("raspi-io").RaspiIO;
+
 const Gpsd = require("./src/gpsd.js");
 const Display = require("./src/display.js");
 const IP = require("./src/ip.js");
@@ -6,27 +9,24 @@ const IP = require("./src/ip.js");
 const UPDATE_INTERVAL = 1000;
 const TRY_MIN_INTERVAL = 1000;
 
+let board = null;
+let display = null;
+let gpsd = null;
+
 let needsUpdate = true;
 let lastUpdate = 0;
 let interval = 0;
 
-const display = new Display();
-const gpsd = new Gpsd();
-
 (function main() {
-	// Exit gracefully on Ctrl+C
-	process.stdin.resume();
-	process.on("SIGINT", destroy);
-
-	gpsd.addEventListener(Gpsd.EVENT.UPDATE, handler_gps_update);
-
-	interval = setInterval(() => {
-		needsUpdate = true;
-		tryUpdate();
-	}, UPDATE_INTERVAL);
+	board = new five.Board({
+		io: new Raspi()
+	});
+	board.on("ready", handler_board_ready);
 })();
 
 function destroy() {
+	board.off("exit", destroy);
+
 	clearInterval(interval);
 	interval = 0;
 
@@ -38,6 +38,21 @@ function destroy() {
 	display = null;
 
 	process.exit();
+}
+
+function handler_board_ready() {
+	board.off("ready", handler_board_ready);
+	board.on("exit", destroy);
+
+	display = new Display(board);
+
+	gpsd = new Gpsd();
+	gpsd.addEventListener(Gpsd.EVENT.UPDATE, handler_gps_update);
+
+	interval = setInterval(() => {
+		needsUpdate = true;
+		tryUpdate();
+	}, UPDATE_INTERVAL);
 }
 
 function handler_gps_update(evt) {
