@@ -12,7 +12,7 @@ const display = new Display();
 const gpsd = new Gpsd();
 
 (function main() {
-	gpsd.addEventListener(GPSD.EVENT.UPDATE, handler_gps_update);
+	gpsd.addEventListener(Gpsd.EVENT.UPDATE, handler_gps_update);
 
 	setInterval(() => {
 		needsUpdate = true;
