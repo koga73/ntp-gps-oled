@@ -15,7 +15,7 @@ class Display {
 
 	static FONT_WIDTH = 5; // Height of the font in pixels
 	static FONT_HEIGHT = 7; // Height of the font in pixels
-	static FONT_LEADING = 1; // Padding between lines in pixels
+	static FONT_LEADING = 3; // Padding between lines in pixels
 
 	debug = false;
 	board = null;
@@ -67,24 +67,23 @@ class Display {
 		const satsStr = `SATS: ${sats}`;
 		const ppsStr = `PPS: ${pps ? "YES" : "NO"}`;
 		const satsPpsSpace = " ".repeat(Math.floor(this.oled_options.width / (Display.FONT_WIDTH + 2)) - (satsStr.length + ppsStr.length));
-		const line1 = `${satsStr}${satsPpsSpace}${ppsStr}`;
 
 		/*
 		const hasNegative = lat < 0 || lon < 0;
 		const line2 = `LAT: ${hasNegative && lat >= 0 ? "" : ""}${lat.toFixed(Display.DECIMAL_PRECISION)}`;
 		const line3 = `LON: ${hasNegative && lon >= 0 ? "" : ""}${lon.toFixed(Display.DECIMAL_PRECISION)}`;
+		const latLon = `${lat.toFixed(Display.DECIMAL_PRECISION)} ${lon.toFixed(Display.DECIMAL_PRECISION)}`;
 		*/
 
 		const now = new Date();
-		const hoursStr = now.getHours().toString().padStart(2, "0");
+		const monthStr = (now.getMonth() + 1).toString();
+		const dayStr = now.getDate().toString().padStart(2, "0");
+		const yearStr = now.getFullYear().toString().slice(-2); // Last two digits of the year
+		const hoursStr = now.getHours();
 		const minutesStr = now.getMinutes().toString().padStart(2, "0");
 		const secondsStr = now.getSeconds().toString().padStart(2, "0");
-		const line2 = `TIME: ${hoursStr}:${minutesStr}:${secondsStr}`;
 
-		const line3 = `${lat.toFixed(Display.DECIMAL_PRECISION)} ${lon.toFixed(Display.DECIMAL_PRECISION)}`;
-		const line4 = `IP: ${ip ? ip : "N/A"}`;
-
-		const lines = [line1, line2, line3, line4];
+		const lines = [`${satsStr}${satsPpsSpace}${ppsStr}`, `${monthStr}-${dayStr}-${yearStr} ${hoursStr}:${minutesStr}:${secondsStr}`, ip ? ip : "IP: N/A"];
 
 		oled.clearDisplay();
 		for (let i = 0; i < lines.length; i++) {
