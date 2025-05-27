@@ -4,6 +4,12 @@ const Raspi = require("raspi-io").RaspiIO;
 const Oled = require("oled-js");
 const font = require("oled-font-5x7");
 
+const DEFAULT_OLED_OPTIONS = {
+	width: 128,
+	height: 32,
+	address: 0x3c
+};
+
 class Display {
 	static DECIMAL_PRECISION = 6; // Number of decimal places
 	static FONT_HEIGHT = 7; // Height of the font in pixels
@@ -11,13 +17,9 @@ class Display {
 	debug = false;
 	board = null;
 	oled = null;
-	oled_options = {
-		width,
-		height,
-		address
-	};
+	oled_options = {...DEFAULT_OLED_OPTIONS};
 
-	constructor({debug = false, width = 128, height = 32, address = 0x3c, ...options} = {}) {
+	constructor({debug = false, width = DEFAULT_OLED_OPTIONS.width, height = DEFAULT_OLED_OPTIONS.height, address = DEFAULT_OLED_OPTIONS.address, ...options} = {}) {
 		this.debug = debug;
 		this.oled_options = {
 			width,
