@@ -32,6 +32,7 @@ class Display {
 		};
 
 		this.handler_board_ready = this.handler_board_ready.bind(this);
+		this.update = this.update.bind(this);
 
 		const board = new five.Board({
 			io: new Raspi()
@@ -82,7 +83,7 @@ class Display {
 		oled.clearDisplay();
 		for (let i = 0; i < lines.length; i++) {
 			const line = lines[i];
-			const y = i * Display.FONT_HEIGHT + Display.FONT_PADDING;
+			const y = i * (Display.FONT_HEIGHT + Display.FONT_PADDING);
 			oled.setCursor(1, y);
 			oled.writeString(font, 1, line, 1, false, 1, false);
 		}
