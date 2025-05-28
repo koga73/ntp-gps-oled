@@ -21,6 +21,7 @@ let interval = 0;
 
 (function main() {
 	board = new Board({
+		repl: false,
 		io: new Raspi({
 			enableSerial: false,
 			enableI2C: true,
