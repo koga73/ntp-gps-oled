@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const {Board} = require("johnny-five");
 const Raspi = require("raspi-io").RaspiIO;
 

@@ -1,0 +1,12 @@
+[Unit]
+Description=OLED Display showing Satellites, PPS, Date/Time and IP Address
+After=network.target ntpd.service gpsd.service
+
+[Service]
+Type=simple
+WorkingDirectory=/srv/ntp-gps-oled
+ExecStart=index.js
+Restart=no
+
+[Install]
+WantedBy=multi-user.target
