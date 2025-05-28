@@ -187,7 +187,7 @@ class Gpsd extends EventTarget {
 		if (this.debug) {
 			console.log("PPS:", data);
 		}
-		const {realSec: pps} = data;
+		const {real_sec: pps} = data;
 
 		let didUpdate = false;
 		const oldData = this.data;

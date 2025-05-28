@@ -19,7 +19,11 @@ let interval = 0;
 
 (function main() {
 	board = new Board({
-		io: new Raspi()
+		io: new Raspi({
+			enableSerial: false,
+			enableI2C: true,
+			excludePins: ["GPIO18"]
+		})
 	});
 	board.on("ready", handler_board_ready);
 })();
